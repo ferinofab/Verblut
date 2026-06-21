@@ -55,7 +55,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::get('/products/with-category', [CategoryController::class, 'withCategory'])->name('admin.with-category');
     Route::post('/products/{id}/category', [CategoryController::class, 'updateCategory'])->name('admin.update-category');
     Route::post('/products/bulk-update', [CategoryController::class, 'bulkUpdate'])->name('admin.bulk-update');
-    Route::post('/sync', [SyncController::class, 'sync'])->name('admin.sync');
+    Route::get('/sync', [SyncController::class, 'sync'])->name('admin.sync');
 });
 
 // Личный кабинет
