@@ -1,0 +1,534 @@
+/* ===== ПЕРЕМЕННЫЕ ===== */
+:root {
+    --primary: #3B82F6;
+    --info: #040473;
+    --secondary: #F1F5F9;
+    --text-dark: #1E293B;
+    --transition-default: all 0.3s ease;
+}
+
+/* ===== БАЗОВЫЕ СТИЛИ ===== */
+body {
+    background-color: #ffffff;
+    color: var(--text-dark);
+    font-family: system-ui, -apple-system, Helvetica, Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+}
+
+/* ===== НАВБАР ===== */
+.navbar {
+    background-color: #ffffff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    transition: height 0.3s, backdrop-filter 0.3s;
+    padding: 0.5rem 1rem;
+}
+
+.navbar.shrink {
+    height: 50px;
+    backdrop-filter: blur(8px);
+}
+
+.navbar-brand,
+.nav-link,
+.navbar .form-control,
+.navbar .btn {
+    color: var(--text-dark) !important;
+}
+
+.nav-link {
+    position: relative;
+    transition: color 0.2s;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 0;
+    height: 2px;
+    background: var(--info);
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+.nav-link:hover {
+    color: var(--info) !important;
+}
+
+/* Убираем подчёркивание у корзины, профиля и кнопок входа */
+.nav-link.position-relative::after,
+.nav-item.dropdown .nav-link::after,
+.nav-item .nav-link[href*="login"]::after,
+.nav-item .nav-link[href*="register"]::after {
+    display: none !important;
+}
+
+/* Кнопки входа и регистрации */
+.nav-item .nav-link[href*="login"],
+.nav-item .nav-link[href*="register"] {
+    background: var(--primary) !important;
+    color: white !important;
+    border-radius: 30px;
+    padding: 6px 18px !important;
+    margin-left: 8px;
+    transition: all 0.3s ease;
+}
+
+.nav-item .nav-link[href*="login"]:hover,
+.nav-item .nav-link[href*="register"]:hover {
+    background: #2563EB !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+/* Корзина - только смещение по Y */
+.nav-link.position-relative {
+    transition: transform 0.2s ease;
+    box-shadow: none !important;
+    background: transparent !important;
+}
+
+.nav-link.position-relative:hover {
+    transform: translateY(-3px);
+    box-shadow: none !important;
+    background: transparent !important;
+}
+
+/* ===== ВЫПАДАЮЩИЕ МЕНЮ ===== */
+.dropdown-menu,
+.dropdown-submenu > .dropdown-menu {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+}
+
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu > .dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -6px;
+    margin-left: -1px;
+    display: none;
+}
+
+.dropdown-submenu:hover > .dropdown-menu {
+    display: block;
+}
+
+/* ===== КОРЗИНА (бейдж) ===== */
+.cart-badge {
+    position: absolute;
+    top: -2px;
+    right: -8px;
+    background-color: #dc3545;
+    color: white;
+    border-radius: 50%;
+    font-size: 0.65rem;
+    font-weight: bold;
+    min-width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+    box-shadow: 0 0 0 1px white;
+}
+
+/* ===== КНОПКИ ===== */
+.btn-primary,
+.btn {
+    background-color: var(--primary);
+    border: none;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.btn-primary:hover,
+.btn:hover {
+    transform: scale(1.05);
+    background-color: #2563EB;
+}
+
+.btn-pill {
+    border-radius: 50px;
+    padding: 0.35rem 1rem;
+}
+
+/* ===== ФОРМЫ ===== */
+.form-control {
+    border-radius: 30px;
+    border: 1px solid var(--secondary);
+    padding-right: 2.5rem;
+}
+
+.position-relative .btn {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background: transparent;
+    color: var(--info);
+}
+
+.position-relative .btn:hover {
+    transform: translateY(-50%) scale(1.05);
+}
+
+/* ===== КАРТОЧКИ (общие) ===== */
+.card {
+    background-color: #fff;
+    border: none;
+    border-radius: 0.5rem;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+
+/* ===== КАРТОЧКИ ПРЕИМУЩЕСТВ ===== */
+.feature-card {
+    padding: 1.5rem;
+    border-radius: 1rem;
+    transition: transform 0.3s, box-shadow 0.3s;
+    background: white;
+    cursor: pointer;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.2);
+}
+
+.feature-icon {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(59, 130, 246, 0.1);
+    border-radius: 50%;
+    transition: background 0.3s ease;
+}
+
+.feature-card:hover .feature-icon {
+    background: var(--primary);
+}
+
+.feature-card:hover .feature-icon i {
+    color: white !important;
+}
+
+/* ===== ЗАГОЛОВКИ СЕКЦИЙ ===== */
+.section-title {
+    font-size: 2rem;
+    font-weight: bold;
+    position: relative;
+    display: inline-block;
+    padding-bottom: 15px;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: var(--primary);
+    border-radius: 3px;
+}
+
+/* ===== СЕКЦИЯ "О НАС" ===== */
+.about-section {
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+}
+
+/* ===== СТАТИСТИКА ===== */
+.about-stats {
+    background: #1e293b;
+    border-radius: 20px;
+    padding: 2rem;
+    margin-top: 2rem;
+    max-width: 800px;  /* Ограничиваем ширину */
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.stat-item {
+    text-align: center;
+    padding: 0.5rem;
+}
+
+.stat-number {
+    display: block;
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--primary);
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: #cbd5e1;
+}
+
+/* ===== КАРТОЧКИ ТОВАРОВ ===== */
+.product-card {
+    background: white;
+    border-radius: 1rem;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    position: relative;
+}
+
+.product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+}
+
+.product-image-wrapper {
+    position: relative;
+    height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fa;
+    overflow: hidden;
+}
+
+.product-image {
+    max-height: 180px;
+    max-width: 90%;
+    object-fit: contain;
+    transition: transform 0.3s;
+}
+
+.product-card:hover .product-image {
+    transform: scale(1.05);
+}
+
+.product-out-of-stock {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+}
+
+.out-of-stock-badge {
+    background: #dc3545;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 30px;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.product-sale-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: #dc3545;
+    color: white;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    z-index: 2;
+}
+
+.product-body {
+    padding: 1rem;
+    text-align: center;
+}
+
+.product-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.product-title a {
+    color: #1e293b;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.product-title a:hover {
+    color: var(--primary);
+}
+
+.product-category {
+    font-size: 0.8rem;
+    color: #6c757d;
+    margin-bottom: 0.75rem;
+}
+
+.product-price {
+    margin-top: 0.5rem;
+}
+
+.current-price {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: var(--primary);
+}
+
+.sale-price {
+    color: #dc3545;
+}
+
+.old-price {
+    font-size: 0.85rem;
+    text-decoration: line-through;
+    color: #6c757d;
+    margin-right: 8px;
+}
+
+/* ===== STRETCHED LINK FIX ===== */
+.stretched-link::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    content: "";
+}
+
+.product-card .btn {
+    position: relative;
+    z-index: 2;
+}
+
+/* ===== ФУТЕР ===== */
+.footer {
+    background-color: var(--secondary);
+    color: var(--text-dark);
+    padding: 2rem 0;
+    margin-top: auto;
+}
+
+.footer a {
+    color: var(--text-dark);
+    transition: color 0.2s;
+}
+
+.footer a:hover {
+    color: var(--info);
+}
+
+/* ===== АНИМАЦИИ ПРИ СКРОЛЛЕ ===== */
+.animate-on-scroll {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.animate-on-scroll.visible {
+    opacity: 1;
+    transform: none;
+}
+
+/* Для главной страницы */
+.home-page .animate-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.home-page .animate-on-scroll.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Задержки */
+.home-page .animate-on-scroll:nth-child(1) { transition-delay: 0s; }
+.home-page .animate-on-scroll:nth-child(2) { transition-delay: 0.1s; }
+.home-page .animate-on-scroll:nth-child(3) { transition-delay: 0.2s; }
+.home-page .animate-on-scroll:nth-child(4) { transition-delay: 0.3s; }
+
+/* ===== SWIPER (СЛАЙДЕР) ===== */
+.swiper {
+    overflow: hidden;
+}
+
+.swiper-slide img {
+    height: 400px;
+    object-fit: cover;
+    width: 100%;
+}
+
+/* ===== АДАПТИВ ===== */
+@media (max-width: 768px) {
+    .swiper-slide img {
+        height: 200px;
+    }
+
+    .navbar-brand {
+        font-size: 1.2rem;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+    }
+
+    .stat-number {
+        font-size: 1.3rem;
+    }
+
+    .stat-label {
+        font-size: 0.7rem;
+    }
+
+    .feature-card {
+        padding: 1rem;
+    }
+
+    .feature-icon {
+        width: 50px;
+        height: 50px;
+    }
+
+    .feature-icon i {
+        font-size: 1.5rem !important;
+    }
+
+    .about-stats {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 992px) {
+    .nav-item .nav-link[href*="login"],
+    .nav-item .nav-link[href*="register"] {
+        display: inline-block;
+        width: auto;
+        margin: 5px 0;
+        text-align: center;
+    }
+}
