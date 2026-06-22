@@ -12,6 +12,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\AdminReviewController;
 use App\Http\Controllers\ReviewController;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
 // Главная и каталог
@@ -109,3 +110,6 @@ Route::post('/cookie-consent', [CookieConsentController::class, 'consent'])->nam
 Route::get('/privacy-policy', function () {
     return view('privacy-policy');
 })->name('privacy.policy');
+
+
+

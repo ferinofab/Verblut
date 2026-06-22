@@ -16,8 +16,8 @@
             <div class="col-md-3 mb-3">
                 <h6>Контакты</h6>
                 <ul class="list-unstyled text-muted">
-                    <li><i class="bi bi-telephone"></i> 8 (800) 123-45-67</li>
-                    <li><i class="bi bi-envelope"></i> info@mirhimii.ru</li>
+                    <li><i class="bi bi-telephone"></i> 8 (999) 315-99-02</li>
+                    <li><i class="bi bi-envelope"></i> MirHimii@gmail.com</li>
                 </ul>
             </div>
         </div>

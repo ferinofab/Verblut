@@ -3,8 +3,6 @@
 
 @section('title', 'Каталог товаров - Мир Химии')
 <style>
-    /* resources/css/app.css */
-
     /* Стили для фонового изображения */
     .product-image-bg {
         height: 260px;
@@ -83,7 +81,7 @@
         <div class="row">
             <!-- Боковая панель с фильтрами -->
             <div class="col-lg-3 mb-4">
-                <div class="card shadow-sm border-0 sticky-top" style="top: 20px;">
+                <div class=" shadow-sm border-0 sticky-top" style="top: 20px;">
                     <div class="card-header bg-white border-0 pt-3">
                         <h5 class="mb-0 fw-bold">
                             <i class="bi bi-funnel"></i> Фильтры
@@ -107,7 +105,8 @@
                             <!-- Категории -->
                             <div class="mb-4">
                                 <label class="form-label fw-bold">Категории</label>
-                                <div class="categories-list" style="max-height: 300px; overflow-y: auto;">
+                                <div class="categories-list" style="max-height: 400px; overflow-y: auto;">
+                                    <!-- Все категории -->
                                     <div class="form-check mb-2">
                                         <input class="form-check-input" type="radio"
                                                name="category" value=""
@@ -120,14 +119,24 @@
                                     </div>
 
                                     @foreach($parentCategories as $cat)
-                                        <div class="form-check mb-2">
+                                        <div class="mb-2">
+                                            <!-- Родительская категория (просто текст) -->
+                                            <div class="d-flex align-items-center">
+                                                <span class="text-secondary">{{ $cat->name }}</span>
 
-                                            <p class="text text-primary">{{ $cat->name }}</p>
+                                                <!-- Кнопка-переключатель для дочерних категорий -->
+                                                @if($cat->children->count() > 0)
+                                                    <a class="text-muted ms-2" data-bs-toggle="collapse"
+                                                       href="#subcat_{{ $cat->id }}" role="button"
+                                                       aria-expanded="false" aria-controls="subcat_{{ $cat->id }}">
+                                                        <i class="bi bi-chevron-down"></i>
+                                                    </a>
+                                                @endif
+                                            </div>
 
-
-                                            {{-- Дочерние категории --}}
+                                            <!-- Дочерние категории (выпадающий список) -->
                                             @if($cat->children->count() > 0)
-                                                <div class="ms-4 mt-2">
+                                                <div class="collapse ms-3 mt-1" id="subcat_{{ $cat->id }}">
                                                     @foreach($cat->children as $child)
                                                         <div class="form-check">
                                                             <input class="form-check-input" type="radio"
@@ -135,11 +144,9 @@
                                                                    id="cat_{{ $child->id }}"
                                                                    {{ request('category') == $child->id ? 'checked' : '' }}
                                                                    onchange="this.form.submit()">
-                                                            <label class="form-check-label" for="cat_{{ $child->id }}">
+                                                            <label class="form-check-label small" for="cat_{{ $child->id }}">
                                                                 {{ $child->name }}
-                                                                <small
-                                                                    class="text-muted">({{ $child->products->count() }}
-                                                                    )</small>
+                                                                <small class="text-muted">({{ $child->products->count() }})</small>
                                                             </label>
                                                         </div>
                                                     @endforeach
@@ -187,7 +194,7 @@
                                 <button type="submit" class="btn btn-primary">
                                     <i class="bi bi-filter"></i> Применить
                                 </button>
-                                <a href="{{ route('catalog') }}" class="btn btn-outline-secondary">
+                                <a href="{{ route('catalog') }}" class="btn btn-secondary">
                                     <i class="bi bi-arrow-repeat"></i> Сбросить
                                 </a>
                             </div>
@@ -324,8 +331,11 @@
                     </div>
 
                     <!-- Пагинация -->
-                    <div class="mt-5 d-flex justify-content-center">
-                        {{ $products->links('pagination::bootstrap-5') }}
+                    <div class="d-flex flex-column align-items-center mt-4">
+                        {{ $products->links('vendor.pagination.custom') }}
+                        <span class="text-muted small mt-2">
+        Отображено {{ $products->firstItem() }}–{{ $products->lastItem() }} из {{ $products->total() }} товаров
+             </span>
                     </div>
                 @else
                     <div class="text-center py-5">

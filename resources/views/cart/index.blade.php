@@ -43,17 +43,17 @@
                                             </td>
                                             <td class="text-nowrap">{{ number_format($item->price, 2) }} ₽</td>
                                             <td>
-                                                <div class="input-group" style="width: 120px;">
-                                                    <button class="btn btn-outline-secondary btn-minus" type="button">
+                                                <div class="input-group" style="width: 140px; flex-wrap: nowrap;">
+                                                    <button class="btn btn-secondary btn-minus" type="button" style="padding: 0 8px; height: 32px; display: flex; align-items: center; justify-content: center;">
                                                         <i class="bi bi-dash"></i>
                                                     </button>
                                                     <input type="number"
-                                                           class="form-control text-center quantity"
+                                                           class="form-control text-center quantity text-dark"
                                                            value="{{ $item->quantity }}"
                                                            min="1"
                                                            max="{{ $item->product->amount }}"
-                                                           style="max-width: 50px;">
-                                                    <button class="btn btn-outline-secondary btn-plus" type="button">
+                                                           style="width: 50px; min-width: 40px; height: 32px; padding: 0; font-size: 14px; font-weight: 600;">
+                                                    <button class="btn btn-secondary btn-plus" type="button" style="padding: 0 8px; height: 32px; display: flex; align-items: center; justify-content: center;">
                                                         <i class="bi bi-plus"></i>
                                                     </button>
                                                 </div>
@@ -73,7 +73,7 @@
                     </div>
 
                     <div class="mt-3">
-                        <a href="{{ route('catalog') }}" class="btn btn-outline-secondary">
+                        <a href="{{ route('catalog') }}" class="btn btn-secondary">
                             <i class="bi bi-arrow-left"></i> Продолжить покупки
                         </a>
                     </div>
@@ -102,7 +102,7 @@
                                 <form action="{{ route('cart.clear') }}" method="POST">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-outline-secondary w-100" onclick="return confirm('Очистить корзину?')">
+                                    <button type="submit" class="btn btn-secondary w-100" onclick="return confirm('Очистить корзину?')">
                                         Очистить корзину
                                     </button>
                                 </form>

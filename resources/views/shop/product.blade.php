@@ -138,18 +138,18 @@
                     </div>
 
                     <div class="mb-4">
-                        <h5 class="fw-bold">Количество:</h5>
-                        <div class="d-flex align-items-center">
+                        <h5 class="fw-bold mb-2">Количество:</h5>
+                        <div class="d-flex align-items-center gap-3 flex-wrap">
                             <div class="input-group" style="width: 150px;">
-                                <button class="btn btn-outline-secondary" type="button" id="btnMinus">
-                                    <i class="bi bi-dash"></i>
+                                <button class="btn btn-secondary" type="button" id="btnMinus" style="border-radius: 8px 0 0 8px; padding: 0.375rem 0.75rem;">
+                                    <i class="bi bi-dash-lg"></i>
                                 </button>
-                                <input type="number" id="quantity" class="form-control text-center" value="1" min="1" max="{{ $product->amount }}">
-                                <button class="btn btn-outline-secondary" type="button" id="btnPlus">
-                                    <i class="bi bi-plus"></i>
+                                <input type="number" id="quantity" class="form-control text-center fw-semibold" value="1" min="1" max="{{ $product->amount }}" style="border-left: 0; border-right: 0; padding: 0; font-size: 1rem; width: 50px;">
+                                <button class="btn btn-secondary" type="button" id="btnPlus" style="border-radius: 0 8px 8px 0; padding: 0.375rem 0.75rem;">
+                                    <i class="bi bi-plus-lg"></i>
                                 </button>
                             </div>
-                            <span class="text-muted ms-3">Макс. {{ $product->amount }} шт.</span>
+                            <span class="text-muted small">Макс. {{ $product->amount }} шт.</span>
                         </div>
                     </div>
 

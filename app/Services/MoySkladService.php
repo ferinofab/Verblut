@@ -63,7 +63,7 @@ class MoySkladService
                             'sku' => $item['code'] ?? null,
                             'price' => $price,
                             'description' => $item['description'] ?? '',
-                            // 'image_url' => $item['images']['meta']['href'] ?? null, // если нужно
+                            'amount' => $item['quantity'] ?? 0,
                         ]
                     );
                     $syncedCount++;
@@ -227,6 +227,170 @@ class MoySkladService
             'products' => $productsCount,
             'stocks' => $stocksCount,
             'duration' => $duration
+        ];
+    }
+
+    /**
+     * ОБНОВЛЕНИЕ ОСТАТКА В МОЙСКЛАД (ДОБАВЛЕНО)
+     */
+    /**
+     * ОБНОВЛЕНИЕ ОСТАТКА ЧЕРЕЗ ДОКУМЕНТ РАСХОДА
+     */
+    public function updateStock($moyskladId, $newQuantity)
+    {
+        Log::info('🔄 Updating stock via Demand document', [
+            'moysklad_id' => $moyskladId,
+            'new_quantity' => $newQuantity
+        ]);
+
+        try {
+            // 1. Получаем текущий товар
+            $response = Http::withHeaders([
+                'Authorization' => 'Basic ' . base64_encode($this->login . ':' . $this->password),
+                'Accept-Encoding' => 'gzip',
+            ])->withOptions([
+                'verify' => false,
+                'decode_content' => true,
+                'timeout' => 30,
+            ])->get($this->apiUrl . "entity/product/{$moyskladId}");
+
+            if (!$response->successful()) {
+                Log::error('❌ Failed to get product', [
+                    'status' => $response->status(),
+                    'body' => $response->body()
+                ]);
+                return false;
+            }
+
+            $product = $response->json();
+
+            // 2. Получаем текущий остаток (из отчета)
+            $stockResponse = Http::withHeaders([
+                'Authorization' => 'Basic ' . base64_encode($this->login . ':' . $this->password),
+                'Accept-Encoding' => 'gzip',
+            ])->withOptions([
+                'verify' => false,
+                'decode_content' => true,
+                'timeout' => 30,
+            ])->get($this->apiUrl . "report/stock/all", [
+                'filter' => "product.id={$moyskladId}",
+                'limit' => 1
+            ]);
+
+            $currentStock = 0;
+            if ($stockResponse->successful()) {
+                $stockData = $stockResponse->json();
+                $currentStock = $stockData['rows'][0]['stock'] ?? 0;
+            }
+
+            $quantityToWriteOff = $currentStock - $newQuantity;
+
+            if ($quantityToWriteOff <= 0) {
+                Log::info('No need to update stock', [
+                    'current' => $currentStock,
+                    'new' => $newQuantity
+                ]);
+                return true;
+            }
+
+            // 3. Получаем организацию и склад
+            $orgResponse = Http::withHeaders([
+                'Authorization' => 'Basic ' . base64_encode($this->login . ':' . $this->password),
+            ])->withOptions([
+                'verify' => false,
+            ])->get($this->apiUrl . "entity/organization");
+
+            $organization = $orgResponse->json()['rows'][0] ?? null;
+
+            $storeResponse = Http::withHeaders([
+                'Authorization' => 'Basic ' . base64_encode($this->login . ':' . $this->password),
+            ])->withOptions([
+                'verify' => false,
+            ])->get($this->apiUrl . "entity/store");
+
+            $store = $storeResponse->json()['rows'][0] ?? null;
+
+            if (!$organization || !$store) {
+                Log::error('❌ Failed to get organization or store');
+                return false;
+            }
+
+            // 4. Создаем документ "Расход" (Demand)
+            $demandData = [
+                'name' => 'Списание по заказу #' . time(),
+                'organization' => [
+                    'meta' => $organization['meta']
+                ],
+                'store' => [
+                    'meta' => $store['meta']
+                ],
+                'positions' => [
+                    [
+                        'quantity' => $quantityToWriteOff,
+                        'price' => 0,
+                        'assortment' => [
+                            'meta' => $product['meta']
+                        ]
+                    ]
+                ]
+            ];
+
+            Log::info('📤 Creating Demand document', [
+                'data' => $demandData
+            ]);
+
+            $demandResponse = Http::withHeaders([
+                'Authorization' => 'Basic ' . base64_encode($this->login . ':' . $this->password),
+                'Content-Type' => 'application/json',
+            ])->withOptions([
+                'verify' => false,
+                'decode_content' => true,
+                'timeout' => 30,
+            ])->post($this->apiUrl . "entity/demand", $demandData);
+
+            if (!$demandResponse->successful()) {
+                Log::error('❌ Failed to create Demand document', [
+                    'status' => $demandResponse->status(),
+                    'body' => $demandResponse->body()
+                ]);
+                return false;
+            }
+
+            Log::info('✅ Stock updated via Demand document', [
+                'moysklad_id' => $moyskladId,
+                'quantity_written_off' => $quantityToWriteOff
+            ]);
+
+            return true;
+
+        } catch (\Exception $e) {
+            Log::error('❌ Exception in updateStock', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return false;
+        }
+    }
+
+    /**
+     * Массовое обновление остатков для заказа (ДОБАВЛЕНО)
+     */
+    public function updateStocksBatch(array $updates)
+    {
+        $successCount = 0;
+        $failedItems = [];
+
+        foreach ($updates as $moyskladId => $newQuantity) {
+            if ($this->updateStock($moyskladId, $newQuantity)) {
+                $successCount++;
+            } else {
+                $failedItems[] = $moyskladId;
+            }
+        }
+
+        return [
+            'success' => $successCount,
+            'failed' => $failedItems
         ];
     }
 }

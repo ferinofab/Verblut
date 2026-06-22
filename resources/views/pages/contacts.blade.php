@@ -31,10 +31,8 @@
                                     </div>
                                     <div class="flex-grow-1 ms-3">
                                         <h6 class="fw-bold mb-1">Телефон</h6>
-                                        <p class="mb-0">
-                                            <a href="tel:+78001234567" class="text-decoration-none">+7 (800) 123-45-67</a><br>
+                                            <a href="tel:+78001234567" class="text-decoration-none">8 (999) 315-99-02</a><br>
                                             <small class="text-muted">Бесплатно по России</small>
-                                        </p>
                                     </div>
                                 </div>
 
@@ -48,9 +46,9 @@
                                     <div class="flex-grow-1 ms-3">
                                         <h6 class="fw-bold mb-1">Email</h6>
                                         <p class="mb-0">
-                                            <a href="mailto:info@mirhimii.ru" class="text-decoration-none">info@gmail.com</a> — общие вопросы<br>
-                                            <a href="mailto:orders@mirhimii.ru" class="text-decoration-none">orders@gmail.com</a> — заказы<br>
-                                            <a href="mailto:wholesale@mirhimii.ru" class="text-decoration-none">opt@gmail.com</a> — опт
+                                            <a href="mailto:info@mirhimii.ru" class="text-decoration-none">infoMirHimii@gmail.com</a> — общие вопросы<br>
+                                            <a href="mailto:orders@mirhimii.ru" class="text-decoration-none">ordersMirHimii@gmail.com</a> — заказы<br>
+                                            <a href="mailto:wholesale@mirhimii.ru" class="text-decoration-none">optMirHimii@gmail.com</a> — опт
                                         </p>
                                     </div>
                                 </div>
@@ -65,8 +63,8 @@
                                     <div class="flex-grow-1 ms-3">
                                         <h6 class="fw-bold mb-1">Адрес</h6>
                                         <p class="mb-0">
-                                            123456, г. Москва,<br>
-                                            ул. Примерная, д. 123, стр. 1<br>
+                                            респ. Хакасия, г. Абакан,<br>
+                                            ул Крылова 55Б<br>
                                             <small class="text-muted">Пн-Пт: 10:00 – 20:00</small>
                                         </p>
                                     </div>
@@ -142,29 +140,12 @@
                         <div class="card border-0 shadow-sm overflow-hidden">
                             <div class="ratio ratio-16x9">
                                 <iframe
-                                    src="https://yandex.ru/map-widget/v1/?ll=37.617698,55.755864&z=12&pt=37.617698,55.755864,pm2rdm"
+                                    src="https://yandex.ru/map-widget/v1/?ll=91.443565,53.737548&z=18&pt=91.443565,53.737548,pm2rdm&text=Респ.%20Хакасия,%20г.%20Абакан,%20ул.%20Крылова%2055Б"
                                     allowfullscreen
                                     loading="lazy">
                                 </iframe>
                             </div>
                         </div>
-                    </div>
-                </div>
-
-                {{-- Социальные сети --}}
-                <div class="text-center mt-5">
-                    <h4 class="h5 mb-3">Мы в соцсетях</h4>
-                    <div class="d-flex justify-content-center gap-3">
-                        <a href="#" class="btn btn-outline-primary rounded-circle" style="width: 50px; height: 50px; display: inline-flex; align-items: center; justify-content: center;">
-                            <i class="bi bi-telegram fs-5"></i>
-                        </a>
-
-                        <a href="#" class="btn btn-outline-primary rounded-circle" style="width: 50px; height: 50px; display: inline-flex; align-items: center; justify-content: center;">
-                            <i class="bi bi-youtube fs-5"></i>
-                        </a>
-                        <a href="#" class="btn btn-outline-primary rounded-circle" style="width: 50px; height: 50px; display: inline-flex; align-items: center; justify-content: center;">
-                            <i class="bi bi-instagram fs-5"></i>
-                        </a>
                     </div>
                 </div>
             </div>

@@ -4,8 +4,9 @@ namespace App\Console\Commands;
 
 use App\Services\MoySkladService;
 use Illuminate\Console\Command;
+use Illuminate\Contracts\Console\Isolatable;
 
-class SyncMoySklad extends Command
+class SyncMoySklad extends Command implements Isolatable
 {
     protected $signature = 'moysklad:sync
                             {--type=full : Тип синхронизации: full, products, stocks}';
