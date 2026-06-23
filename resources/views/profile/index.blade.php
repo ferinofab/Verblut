@@ -79,13 +79,13 @@
                                             <td>{{ $order->created_at->format('d.m.Y') }}</td>
                                             <td>{{ number_format($order->total_amount, 2) }} ₽</td>
                                             <td><span class="badge bg-secondary">{{ $order->status->name ?? 'Новый' }}</span></td>
-                                            <td><a href="{{ route('order.show', $order) }}" class="btn btn-sm btn-outline-primary">Детали</a></td>
+                                            <td><a href="{{ route('order.show', $order) }}" class="btn btn-sm btn-primary">Детали</a></td>
                                         </tr>
                                     @endforeach
                                     </tbody>
                                 </table>
                             </div>
-                            <a href="{{ route('orders.history') }}" class="btn btn-link">Все заказы →</a>
+                            <a href="{{ route('orders.history') }}" class="btn btn-primary">Все заказы →</a>
                         @else
                             <p class="text-muted">У вас пока нет заказов</p>
                             <a href="{{ route('catalog') }}" class="btn btn-primary">Перейти в каталог</a>

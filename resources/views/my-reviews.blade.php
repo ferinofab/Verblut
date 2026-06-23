@@ -6,7 +6,7 @@
     <div class="container py-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1>Мои отзывы</h1>
-            <a href="{{ url('/') }}" class="btn btn-outline-primary">На главную</a>
+            <a href="{{ url('/') }}" class="btn btn-primary">На главную</a>
         </div>
 
         @if($reviews->isEmpty())

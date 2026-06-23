@@ -102,6 +102,11 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li>
+                                    <a class="dropdown-item" href="{{ route('admin.orders.index') }}">
+                                        <i class="bi bi-box-seam"></i> Заказы
+                                    </a>
+                                </li>
+                                <li>
                                     <a class="dropdown-item" href="{{ route('admin.no-category') }}">
                                         <i class="bi bi-exclamation-triangle"></i> Товары без категорий
                                     </a>
@@ -140,10 +145,7 @@
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="{{ route('profile.index') }}">Личный кабинет</a></li>
                             <li><a class="dropdown-item" href="{{ route('orders.history') }}">Мои заказы</a></li>
-                            @if(Auth::user()->is_admin ?? false)
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="{{ route('admin.no-category') }}">Админ панель</a></li>
-                            @endif
+
                             <li><hr class="dropdown-divider"></li>
                             <li>
                                 <form method="POST" action="{{ route('logout') }}">

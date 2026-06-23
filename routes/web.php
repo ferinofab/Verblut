@@ -112,4 +112,7 @@ Route::get('/privacy-policy', function () {
 })->name('privacy.policy');
 
 
+    Route::get('/admin/orders', [OrderController::class, 'adminIndex'])->name('admin.orders.index');
+    Route::get('/orders/{order}', [OrderController::class, 'adminShow'])->name('admin.orders.show');
+    Route::put('/orders/{order}/status', [OrderController::class, 'adminUpdateStatus'])->name('admin.orders.update-status');
 

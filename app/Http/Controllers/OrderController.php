@@ -180,4 +180,104 @@ class OrderController extends Controller
 
         return view('order.show', compact('order'));
     }
+
+    /**
+     * Отображение всех заказов для администратора
+     */
+    public function adminIndex(Request $request)
+    {
+        $query = Order::with(['user', 'status', 'items']);
+
+        // Фильтрация по статусу
+        if ($request->has('status') && $request->status != '') {
+            $query->where('order_status_id', $request->status);
+        }
+
+        // Поиск по номеру заказа, имени, телефону или email
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('id', 'LIKE', "%{$search}%")
+                    ->orWhere('name', 'LIKE', "%{$search}%")
+                    ->orWhere('phone', 'LIKE', "%{$search}%")
+                    ->orWhere('email', 'LIKE', "%{$search}%");
+            });
+        }
+
+        $orders = $query->orderBy('created_at', 'desc')->paginate(20);
+
+        // Получаем статистику по всем заказам (без фильтров)
+        $allOrders = Order::all();
+        $statistics = [
+            'total' => $allOrders->count(),
+            'new' => $allOrders->where('order_status_id', 1)->count(),
+            'processing' => $allOrders->where('order_status_id', 2)->count(),
+            'completed' => $allOrders->where('order_status_id', 4)->count(),
+            'cancelled' => $allOrders->where('order_status_id', 5)->count(),
+        ];
+
+        $statuses = OrderStatus::all();
+
+        return view('admin.orders.index', compact('orders', 'statuses', 'statistics'));
+    }
+
+    /**
+     * Изменение статуса заказа
+     */
+    public function adminUpdateStatus(Request $request, Order $order)
+    {
+        $request->validate([
+            'status_id' => 'required|exists:order_statuses,id'
+        ]);
+
+        try {
+            $oldStatus = $order->status->name ?? 'Неизвестно';
+            $newStatus = OrderStatus::find($request->status_id);
+
+            $order->status_id = $request->status_id;
+            $order->save();
+
+            Log::info('📝 Статус заказа изменён администратором', [
+                'order_id' => $order->id,
+                'admin_id' => Auth::id(),
+                'old_status' => $oldStatus,
+                'new_status' => $newStatus->name
+            ]);
+
+            // Для AJAX запроса возвращаем JSON
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => "Статус заказа #{$order->id} изменён на '{$newStatus->name}'",
+                    'order' => $order,
+                    'new_status' => $newStatus->name
+                ]);
+            }
+
+            return redirect()->back()->with('success', "Статус заказа #{$order->id} изменён на '{$newStatus->name}'");
+
+        } catch (\Exception $e) {
+            Log::error('❌ Ошибка при изменении статуса заказа', [
+                'order_id' => $order->id,
+                'error' => $e->getMessage()
+            ]);
+
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Ошибка при изменении статуса заказа: ' . $e->getMessage()
+                ], 500);
+            }
+
+            return redirect()->back()->with('error', 'Ошибка при изменении статуса заказа');
+        }
+    }
+
+    public function adminShow(Order $order)
+    {
+        $order->load(['user', 'items.product', 'status']);
+        $statuses = OrderStatus::all();
+
+        return view('admin.orders.show', compact('order', 'statuses'));
+    }
 }
